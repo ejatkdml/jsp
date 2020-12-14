@@ -77,10 +77,14 @@ public class GuestBookMgr {
 		String sql = null;
 		try {
 			con = pool.getConnection();
-			sql = "";
+			sql = "insert tblGuestBook(id,contents,ip,regdate,regtime,secret)"
+					+ "values(?,?,?,now(),now(),?)";
 			pstmt = con.prepareStatement(sql);
-			int cnt = pstmt.executeUpdate();
-
+			pstmt.setString(1, bean.getId());
+			pstmt.setString(2, bean.getContents());
+			pstmt.setString(3, bean.getIp());
+			pstmt.setString(4, bean.getSecret());
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -90,12 +94,55 @@ public class GuestBookMgr {
 	}
 	
 	//GuestBook List
+	public Vector<GuestBookBean> listGuestBook(String id, String grade){
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		Vector<GuestBookBean> vlist = new Vector<GuestBookBean>();
+		try {
+			con = pool.getConnection();
+			if(grade.equals("1")) {//관리자
+				sql = "select * from tblGuestBook order by num desc";
+				pstmt = con.prepareStatement(sql);
+			}else if(grade.equals("0")){//일반 로그인 : 본인 + 다른 사람 일반글
+				sql = "select * from tblGuestBook "
+				+ "where id=? or secret='0' order by num desc";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, id);
+			}
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				GuestBookBean bean = new GuestBookBean();
+				bean.setNum(rs.getInt("num"));
+				bean.setId(rs.getString("id"));
+				bean.setContents(rs.getString("contents"));
+				bean.setIp(rs.getString("ip"));
+				String tempDate = SDF_DATE.format(rs.getDate("regDate"));
+				bean.setRegdate(tempDate);
+				String tempTime = SDF_TIME.format(rs.getTime("regTime"));
+				bean.setRegtime(tempTime);
+				bean.setSecret(rs.getString("secret"));
+				vlist.addElement(bean);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return vlist;
+	}
 	
-	//GuestBook Read
+	//GuestBook Read : 날짜와 시간은 list 동일하게
+	public GuestBookBean getGuestBook(int num) {}
 	
-	//GuestBook Update : Content, ip, secret
+	//GuestBook Update : Contents, ip, secret
+	public void updateGuestBook(GuestBookBean bean) {}
 	
 	//GuestBook Delete
+	public void deleteGuestBook(int num) {}
+	
+	/////Comment 기능///////////
 	
 	
 }
