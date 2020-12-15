@@ -1,5 +1,5 @@
-<%@page contentType="text/html; charset=EUC-KR"%>
-<%request.setCharacterEncoding("EUC-KR");%>
+<%@page contentType="text/html; charset=UTF-8"%>
+<%request.setCharacterEncoding("UTF-8");%>
 <jsp:useBean id="mgr" class="guestbook.GuestBookMgr"/>
 <jsp:useBean id="login" class="guestbook.JoinBean"/>
 <jsp:setProperty property="*" name="login"/>
@@ -10,9 +10,9 @@
 			url = request.getParameter("url");
 		}
 		boolean result = mgr.loginJoin(login.getId(), login.getPwd());
-		String msg = "·Î±×ÀÎ ½ÇÆĞ";
+		String msg = "ë¡œê·¸ì¸ ì‹¤íŒ¨";
 		if(result){
-			msg = "·Î±×ÀÎ ¼º°ø";
+			msg = "ë¡œê·¸ì¸ ì„±ê³µ";
 			login = mgr.getJoin(login.getId());
 			session.setAttribute("idKey", login.getId());
 			session.setAttribute("login", login);

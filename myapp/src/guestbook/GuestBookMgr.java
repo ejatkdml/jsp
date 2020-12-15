@@ -10,7 +10,7 @@ public class GuestBookMgr {
 	
 	private DBConnectionMgr pool;
 	private final SimpleDateFormat SDF_DATE =
-			new SimpleDateFormat("yyyy'³â'  M'¿ù' d'ÀÏ' (E)");
+			new SimpleDateFormat("yyyy'ë…„'  M'ì›”' d'ì¼' (E)");
 	private final SimpleDateFormat SDF_TIME =
 			new SimpleDateFormat("H:mm:ss");
 	
@@ -90,7 +90,6 @@ public class GuestBookMgr {
 		} finally {
 			pool.freeConnection(con, pstmt);
 		}
-		return;
 	}
 	
 	//GuestBook List
@@ -102,10 +101,10 @@ public class GuestBookMgr {
 		Vector<GuestBookBean> vlist = new Vector<GuestBookBean>();
 		try {
 			con = pool.getConnection();
-			if(grade.equals("1")) {//°ü¸®ÀÚ
+			if(grade.equals("1")) {//ê´€ë¦¬ì
 				sql = "select * from tblGuestBook order by num desc";
 				pstmt = con.prepareStatement(sql);
-			}else if(grade.equals("0")){//ÀÏ¹İ ·Î±×ÀÎ : º»ÀÎ + ´Ù¸¥ »ç¶÷ ÀÏ¹İ±Û
+			}else if(grade.equals("0")){//ì¼ë°˜ ë¡œê·¸ì¸ : ë³¸ì¸ + ë‹¤ë¥¸ ì‚¬ëŒ ì¼ë°˜ê¸€
 				sql = "select * from tblGuestBook "
 				+ "where id=? or secret='0' order by num desc";
 				pstmt = con.prepareStatement(sql);
@@ -133,22 +132,82 @@ public class GuestBookMgr {
 		return vlist;
 	}
 	
-	//GuestBook Read : ³¯Â¥¿Í ½Ã°£Àº list µ¿ÀÏÇÏ°Ô
-	public GuestBookBean getGuestBook(int num) {}
+	//GuestBook Read : ë‚ ì§œì™€ ì‹œê°„ì€ list ë™ì¼í•˜ê²Œ
+	public GuestBookBean getGuestBook(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String sql = null;
+		GuestBookBean bean = new GuestBookBean();
+		try {
+			con = pool.getConnection();
+			sql = "select * from tblGuestBook where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				bean.setNum(rs.getInt("num"));
+				bean.setId(rs.getString("id"));
+				bean.setContents(rs.getString("contents"));
+				bean.setIp(rs.getString("ip"));
+				String tempDate = SDF_DATE.format(rs.getDate("regDate"));
+				bean.setRegdate(tempDate);
+				String tempTime = SDF_TIME.format(rs.getTime("regTime"));
+				bean.setRegtime(tempTime);
+				bean.setSecret(rs.getString("secret"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt, rs);
+		}
+		return bean;
+	}
 	
 	//GuestBook Update : Contents, ip, secret
-	public void updateGuestBook(GuestBookBean bean) {}
+	public void updateGuestBook(GuestBookBean bean) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		try {
+			con = pool.getConnection();
+			sql = "update tblGuestBook set contents=?,ip=?,secret=? "
+					+ "where num=?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, bean.getContents());
+			pstmt.setString(2, bean.getIp());
+			pstmt.setString(3, bean.getSecret());
+			pstmt.setInt(4, bean.getNum());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
 	
 	//GuestBook Delete
-	public void deleteGuestBook(int num) {}
+	public void deleteGuestBook(int num) {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String sql = null;
+		try {
+			con = pool.getConnection();
+			sql = "delete from tblGuestBook where num = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, num);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			pool.freeConnection(con, pstmt);
+		}
+	}
 	
-	/////Comment ±â´É///////////
+	/////Comment ê¸°ëŠ¥///////////
 	
 	
 }
-
-
-
 
 
 

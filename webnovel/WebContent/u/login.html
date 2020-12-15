@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Login | vndb</title>
+<base href="http://localhost:8080/webnovel/" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="./css/wndb.css" type="text/css" media="all" />
+
+<meta name="csrf-token" content="fsbUOQmL" />
+<meta name="robots" content="noindex" />
+</head>
+<body>
+	<div id="bgright"></div>
+	<div id="header">
+		<h1>
+			<a href="/">웹소설 데이터베이스</a>
+		</h1>
+	</div>
+	<div id="menulist">
+		<div class="menubox">
+			<h2>Menu</h2>
+			<div>
+				<a href="./wndb.html">Home</a><br /> <a href="/v/all">웹소설</a><br />
+				<b class="grayedout">> </b><a href="/g">태그</a><br /> <a href="/r">작가</a><br />
+				<a href="/p/all">연재처</a><br /> <a href="/s/all">출판사</a><br /> <a
+					href="/c/all">등장인물</a><br /> <b class="grayedout">> </b><a
+					href="/i">특징</a><br /> <a href="/u/all">유저</a><br /> <a
+					href="/hist">최근 변화</a><br /> <a href="/t">토론판</a><br /> <a
+					href="/d6">FAQ</a><br /> <a href="/v/rand">랜덤 웹소설</a><br />
+			</div>
+			<form action="/v/all" method="get" id="search">
+				<fieldset>
+					<legend>Search</legend>
+					<input type="text" class="text" id="sq" name="sq" value=""
+						placeholder="search" /><input type="submit" class="submit"
+						value="Search" />
+				</fieldset>
+			</form>
+		</div>
+		<div class="menubox">
+			<h2>유저 메뉴</h2>
+			<div>
+				<a href="./u/login">로그인</a><br /> <a href="./u/newpass">비밀번호 변경</a><br />
+				<a href="./u/register">회원가입</a><br />
+			</div>
+		</div>
+		<div class="menubox">
+			<h2>Database Statistics</h2>
+			<div>
+				<dl>
+					<dt>Visual Novels</dt>
+					<dd>28596</dd>
+					<dt>
+						<b class="grayedout">> </b>Tags
+					</dt>
+					<dd>2587</dd>
+					<dt>Releases</dt>
+					<dd>72491</dd>
+					<dt>Producers</dt>
+					<dd>10603</dd>
+					<dt>Staff</dt>
+					<dd>21575</dd>
+					<dt>Characters</dt>
+					<dd>91185</dd>
+					<dt>
+						<b class="grayedout">> </b>Traits
+					</dt>
+					<dd>2797</dd>
+				</dl>
+				<div class="clearfloat"></div>
+			</div>
+		</div>
+	</div>
+	<div id="maincontent">
+		<div id="elm0"></div>
+		<div id="footer">
+			"<a href="/v7721" style="text-decoration: none">You've got a
+				pretty face, but you don't look like a very interesting man. Pass.</a>&quot;<br />
+			<a href="https://code.blicky.net/yorhel/vndb">2.28-164</a> | <a
+				href="/d7">about us</a> | <a href="irc://irc.synirc.net/vndb">#vndb</a>
+			| <a href="mailto:contact@vndb.org">contact@vndb.org</a>
+		</div>
+	</div>
+	<script type="application/json" id="pagevars">{"elm":[["User.Login","/"]]}</script>
+	<script type="application/javascript"
+		src="https://s2.vndb.org/f/elm.js?2.28-164"></script>
+	<script type="application/javascript"
+		src="https://s2.vndb.org/f/plain.js?2.28-164"></script>
+</body>
+</html>
